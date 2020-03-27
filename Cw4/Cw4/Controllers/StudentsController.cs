@@ -38,11 +38,38 @@ namespace Cw4.Controllers
                 }
 
             }
+            return Ok(list);
+        }
+        [HttpGet("{indexNumber}")]
+        public IActionResult GetStudent(string indexNumber)
+        {
             
-            
+            using (var con = new SqlConnection(ConString))
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.Connection = con;
+
+                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate, Studies.Name,Semester, StartDate  from Student, Studies, Enrollment where Enrollment.IdEnrollment=Student.IdEnrollment and Studies.IdStudy=Enrollment.IdStudy and IndexNumber=@index;";
+
+                com.Parameters.AddWithValue("index", indexNumber);
+
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+                if (dr.Read())
+                {
+                    var st = new Student();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
+                    st.BirthDate = dr["BirthDate"].ToString();
+                    st.Study = dr["Name"].ToString();
+                    st.Semester = dr["Semester"].ToString();
+                    return Ok(st);
+                }
+            }
+            return NotFound();
 
             
-            return Ok(list);
+
         }
     }
 }
