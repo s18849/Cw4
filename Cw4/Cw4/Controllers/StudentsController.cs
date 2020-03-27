@@ -49,9 +49,9 @@ namespace Cw4.Controllers
             {
                 com.Connection = con;
 
-                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate, Studies.Name,Semester, StartDate  from Student, Studies, Enrollment where Enrollment.IdEnrollment=Student.IdEnrollment and Studies.IdStudy=Enrollment.IdStudy and IndexNumber=@index;";
+                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate, Studies.Name,Semester, StartDate  from Student, Studies, Enrollment where Enrollment.IdEnrollment=Student.IdEnrollment and Studies.IdStudy=Enrollment.IdStudy and IndexNumber='"+indexNumber+"';";
 
-                com.Parameters.AddWithValue("index", indexNumber);
+                
 
                 con.Open();
                 SqlDataReader dr = com.ExecuteReader();
